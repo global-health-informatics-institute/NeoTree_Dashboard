@@ -2,17 +2,45 @@
 # This is the main thread for the application
 # !/usr/bin/python
 import os
-from flask import Flask, render_template
+import json
+from flask import Flask, render_template, request
 
 app = Flask(__name__, template_folder="views", static_folder="assets")
 
 
+# Root page for the dashboard
 @app.route("/")
 def index():
     file_names = get_current_image_names()
-    return render_template("index.html", image_list=file_names)
+    settings = {}
+    try:
+        with open("config/app.config") as json_file:
+            settings = json.load(json_file)
+    finally:
+        pass
+
+    return render_template("index.html", image_list=file_names, config = settings)
 
 
+# Configuration page for the dashboard
+@app.route("/config", methods=["POST", "GET"])
+def config():
+    settings = {}
+    try:
+        with open("config/app.config") as json_file:
+            settings = json.load(json_file)
+    finally:
+        pass
+
+    if request.method == "POST":
+        with open("config/app.config", 'w') as config_file:
+            json.dump(request.form, config_file)
+            config_file.close()
+
+    return render_template("config.html", config=settings)
+
+
+# Function to get list of images for display
 def get_current_image_names():
     options = []
     try:

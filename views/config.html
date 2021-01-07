@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>NeoTree Dashboard - Configuration</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.jpeg') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/app.css') }}">
+    </head>
+    <body>
+        <div class="header">
+            NeoTree Dashboard
+        </div>
+        <div id="mainContainer" style="width:98vw;margin: 1em; font: 1em Arial, sans-serif;">
+            <h2>Configuration</h2>
+
+            <div style="margin-left:auto; margin-right:auto;border: 1px solid silver; border-radius:15px;padding:20px;">
+                <form method="post" action="/config">
+                    <div style="display: table-row;">
+                        <div class="tableCell">Online Repository URL</div>
+                        <div class="tableCell">
+                            <input type="url" name="repository_url" value={{ config['repository_url'] }} required>
+                        </div>
+                    </div>
+                    <div style="display: table-row;">
+                        <div class="tableCell">Authentication Type</div>
+                        <div class="tableCell">
+                            <select name="authentication_type">
+                                <option selected="selected">None</option>
+                                <option>Basic HTTP Authentication</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: table-row;">
+                        <div class="tableCell">Username</div>
+                        <div class="tableCell">
+                            <input >
+                        </div>
+                    </div>
+                    <div style="display: table-row;">
+                        <div class="tableCell">Password</div>
+                        <div class="tableCell">
+                            <input type="password">
+                        </div>
+                    </div>
+                    <div style="display: table-row;">
+                        <div class="tableCell">Refresh after</div>
+                        <div class="tableCell">
+                            <input type="number" min="1" name="refresh_rate" value={{ config['refresh_rate'] }} required> Cycle(s)
+                        </div>
+                    </div>
+                    <div style="display: table-row;">
+                        <div class="tableCell">Display screen for</div>
+                        <div class="tableCell">
+                            <input type="number" min="2" name="display_time" value={{ config['display_time'] }} required> Seconds
+                        </div>
+                    </div>
+                    <input type="submit" value="Save Configuration" style="padding-left:20px;">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

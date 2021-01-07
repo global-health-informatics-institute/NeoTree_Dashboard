@@ -4,22 +4,44 @@
         <meta charset="UTF-8">
         <title>NeoTree Dashboard</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.jpeg') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/app.css') }}">
     </head>
-    <body style="margin: 0vh 0vw; padding: 0px;overflow:hidden;">
-        <div style="width:100vw;text-align:center;height:100vh;">
-            <img id="imageHolder" style=""  src="/assets/images/screenshots/malawi-example-visualisation-1.png">
+    <body style="">
+        <div id="mainContainer" class="mainContainer">
+            <div class="titleText">NeoTree Dashboard</div>
         </div>
     </body>
     <script>
             var currentIndex = 0;
+            var cycle = 1
             var images = []
             {% for image_name in image_list %}
                 images.push("{{image_name}}")
             {% endfor %}
 
             function refreshImage(){
-                currentIndex = ((currentIndex + 1) >= images.length ? 0 : currentIndex + 1)
-                document.getElementById("imageHolder").src = "/assets/images/screenshots/"+ images[currentIndex]
+                console.log("refreshing")
+                if( images.length > 0){
+                    if ((currentIndex + 1) >= images.length)
+                    {
+                        cycle += 1
+                        currentIndex = 0
+                    }
+                    else {
+                        currentIndex += 1
+                    }
+
+                    document.getElementById("mainContainer").innerHTML = "<img src="+ "/assets/images/screenshots/"+ images[currentIndex] + ">"
+
+                }
+                else {
+                    cycle += 1
+                }
+
+                if (cycle > parseInt({{ config["refresh_rate"] }})){
+                    reloadPage()
+                }
+
                 return true;
             }
 
@@ -27,8 +49,6 @@
                 window.location = "/"
             }
 
-            setInterval("refreshImage()",3000)
-            setInterval("reloadPage()",60000)
-
+            setInterval("refreshImage()",1000*parseInt({{ config["display_time"] }}))
     </script>
 </html>

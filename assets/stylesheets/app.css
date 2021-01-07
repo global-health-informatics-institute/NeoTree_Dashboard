@@ -1,0 +1,48 @@
+.mainContainer {
+    width:100vw;
+    text-align:center;
+    height:100vh;
+    margin: 1em 0;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.titleText{
+    font:8em Arial, sans-serif;
+    font-weight: bold;
+}
+
+body{
+    margin: 0vh 0vw;
+    padding: 0px;
+    overflow:hidden;
+}
+input, select {
+    padding: 3px;
+    font-size:1em;
+    min-width: 20vw;
+}
+input[type=button], input[type=submit]{
+    text-decoration: none;
+    margin: 4px 20px;
+    cursor: pointer;
+    background-color: #36688D;
+    color: white;
+    border-radius: 4px;
+}
+input[type=submit] {
+    padding: 10px !important;
+    font-size:1em;
+}
+.header {
+    background-color:#03353E;
+    color:#EBF2EA;
+    font: 1.8em Arial, sans-serif;
+    vertical-align: middle;
+    padding: 20px 0px 20px 10px;
+    font-weight:bold;
+}
+.tableCell{
+    display: table-cell;
+    padding:20px;
+}
