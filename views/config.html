@@ -24,22 +24,22 @@
                     <div style="display: table-row;">
                         <div class="tableCell">Authentication Type</div>
                         <div class="tableCell">
-                            <select name="authentication_type">
-                                <option selected="selected">None</option>
-                                <option>Basic HTTP Authentication</option>
+                            <select name="authentication_type" onchange="hideOptions(this.value);">
+                                <option value="None" selected="selected">None</option>
+                                <option value="Basic HTTP Authentication">Basic HTTP Authentication</option>
                             </select>
                         </div>
                     </div>
-                    <div style="display: table-row;">
+                    <div style="display: table-row;" id="username_block">
                         <div class="tableCell">Username</div>
                         <div class="tableCell">
-                            <input >
+                            <input name="username">
                         </div>
                     </div>
-                    <div style="display: table-row;">
+                    <div style="display: table-row;" id="password_block">
                         <div class="tableCell">Password</div>
                         <div class="tableCell">
-                            <input type="password">
+                            <input name="password" type="password">
                         </div>
                     </div>
                     <div style="display: table-row;">
@@ -58,5 +58,19 @@
                 </form>
             </div>
         </div>
+
+    <script type="text/javascript">
+        function hideOptions(value){
+            console.log(value);
+            if (value == "Basic HTTP Authentication"){
+                document.getElementById("username_block").style.display = "block";
+                document.getElementById("password_block").style.display = "block";
+            }
+            else {
+                document.getElementById("username_block").style.display = "none";
+                document.getElementById("password_block").style.display = "none";
+            }
+        }
+    </script>
     </body>
 </html>

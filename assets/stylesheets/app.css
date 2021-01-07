@@ -1,3 +1,7 @@
+.tableCell{
+    display: table-cell;
+    padding:20px;
+}
 .mainContainer {
     width:100vw;
     text-align:center;
@@ -20,7 +24,7 @@ body{
 input, select {
     padding: 3px;
     font-size:1em;
-    min-width: 20vw;
+    min-width: 25vw;
 }
 input[type=button], input[type=submit]{
     text-decoration: none;
@@ -41,8 +45,4 @@ input[type=submit] {
     vertical-align: middle;
     padding: 20px 0px 20px 10px;
     font-weight:bold;
-}
-.tableCell{
-    display: table-cell;
-    padding:20px;
 }

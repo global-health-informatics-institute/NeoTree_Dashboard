@@ -17,7 +17,7 @@ url = settings["repository_url"]
 
 def initiate():
     extensions = ['jpg', 'jpeg', 'png']
-    files = listFD(url, extensions)
+    files = get_file_names(extensions)
     for file_url in files:
         temp_name = file_url.split("/")
         file_name = temp_name[(len(temp_name) - 1)]
@@ -25,15 +25,21 @@ def initiate():
             print("File %s already exists" % file_name)
         else:
             print("Downloading file %s" % file_name)
-            file_object = requests.get(file_url, auth=('MWI_D@ashbo@rd_L0gin', 'B1@uBu113#2*(2_'))
+            if settings["authentication_type"] == "Basic HTTP Authentication":
+                file_object = requests.get(file_url, auth=(settings['username'], settings['password']))
+            else:
+                file_object = requests.get(file_url)
 
             with open('assets/images/screenshots/%s' % file_name, 'wb') as local_file:
                 local_file.write(file_object.content)
 
 
 # function to retrieve file names
-def listFD(url, ext=''):
-    page = requests.get(url, auth=('MWI_D@ashbo@rd_L0gin', 'B1@uBu113#2*(2_')).text
+def get_file_names(ext=''):
+    if settings["authentication_type"] == "Basic HTTP Authentication":
+        page = requests.get(url, auth=(settings['username'], settings['password'])).text
+    else:
+        page = requests.get(url).text
     soup = BeautifulSoup(page, 'html.parser')
     return [url + '/' + node.get('href') for node in soup.find_all('a') if node.get('href').endswith(tuple(ext))]
 
