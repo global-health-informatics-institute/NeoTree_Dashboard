@@ -1,7 +1,9 @@
 from bs4 import BeautifulSoup
+import re
 import json
 import requests
 from os import path
+from datetime import datetime
 
 settings = {}
 try:
@@ -17,21 +19,31 @@ url = settings["repository_url"]
 
 def initiate():
     extensions = ['jpg', 'jpeg', 'png']
-    files = get_file_names(extensions)
-    for file_url in files:
+    file_details = get_file_names(extensions)
+
+    for file_url in file_details["file_names"]:
         temp_name = file_url.split("/")
         file_name = temp_name[(len(temp_name) - 1)]
         if path.exists('assets/images/screenshots/%s' % file_name):
-            print("File %s already exists" % file_name)
+            if file_details["max_date"] > int(path.getmtime('assets/images/screenshots/%s' % file_name)):
+                print("File %s already exists but is old. Downloading" % file_name)
+                download_file(file_url, file_name)
+            else:
+                print("File %s already exists" % file_name)
         else:
             print("Downloading file %s" % file_name)
-            if settings["authentication_type"] == "Basic HTTP Authentication":
-                file_object = requests.get(file_url, auth=(settings['username'], settings['password']))
-            else:
-                file_object = requests.get(file_url)
+            download_file(file_url, file_name)
 
-            with open('assets/images/screenshots/%s' % file_name, 'wb') as local_file:
-                local_file.write(file_object.content)
+
+# function to download a file
+def download_file(file_url, file_name):
+    if settings["authentication_type"] == "Basic HTTP Authentication":
+        file_object = requests.get(file_url, auth=(settings['username'], settings['password']))
+    else:
+        file_object = requests.get(file_url)
+
+    with open('assets/images/screenshots/%s' % file_name, 'wb') as local_file:
+        local_file.write(file_object.content)
 
 
 # function to retrieve file names
@@ -41,7 +53,12 @@ def get_file_names(ext=''):
     else:
         page = requests.get(url).text
     soup = BeautifulSoup(page, 'html.parser')
-    return [url + '/' + node.get('href') for node in soup.find_all('a') if node.get('href').endswith(tuple(ext))]
+    names = [url + '/' + node.get('href') for node in soup.find_all('a') if node.get('href').endswith(tuple(ext))]
+    dates = re.findall(r'\d{2}-\w{3}-\d{4}\s\d{2}:\d{2}', str(soup))
+    dates = [int(datetime.strptime(day, "%d-%b-%Y %H:%M").strftime('%s')) for day in dates]
+    max_date = sorted(dates)[-1]
+
+    return {"file_names": names, "max_date": max_date}
 
 
 if __name__ == "__main__":
