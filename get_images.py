@@ -27,23 +27,24 @@ def initiate():
         if path.exists('assets/images/screenshots/%s' % file_name):
             if file_details["max_date"] > int(path.getmtime('assets/images/screenshots/%s' % file_name)):
                 print("File %s already exists but is old. Downloading" % file_name)
-                download_file(file_url, file_name)
+                download_file(file_url,file_name)
             else:
                 print("File %s already exists" % file_name)
         else:
             print("Downloading file %s" % file_name)
-            download_file(file_url, file_name)
+            download_file(file_url,file_name)
 
 
 # function to download a file
 def download_file(file_url, file_name):
     if settings["authentication_type"] == "Basic HTTP Authentication":
-        file_object = requests.get(file_url, auth=(settings['username'], settings['password']))
+        file_object = requests.get(file_url, auth=(settings['username'], settings['password']), stream=True)
     else:
-        file_object = requests.get(file_url)
+        file_object = requests.get(file_url, stream=True)
 
     with open('assets/images/screenshots/%s' % file_name, 'wb') as local_file:
-        local_file.write(file_object.content)
+        for chunk in file_object.iter_content(32 * 1024):
+            local_file.write(chunk)
 
 
 # function to retrieve file names
