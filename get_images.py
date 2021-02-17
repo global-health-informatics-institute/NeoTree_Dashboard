@@ -43,7 +43,7 @@ def download_file(file_url, file_name):
         file_object = requests.get(file_url, stream=True)
 
     with open('assets/images/screenshots/%s' % file_name, 'wb') as local_file:
-        for chunk in file_object.iter_content(32 * 1024):
+        for chunk in file_object.iter_content(chunk_size=1024):
             local_file.write(chunk)
 
 
