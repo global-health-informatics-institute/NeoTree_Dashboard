@@ -2,3 +2,4 @@
 *.yml
 *.config
 assets/images/screenshots/*
+config/metabase_exports.json

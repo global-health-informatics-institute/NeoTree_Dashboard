@@ -2,7 +2,7 @@
 # This is the main thread for the application
 # !/usr/bin/python
 import os
-import json
+import json, ast
 from flask import Flask, render_template, request
 
 app = Flask(__name__, template_folder="views", static_folder="assets")
@@ -12,14 +12,17 @@ app = Flask(__name__, template_folder="views", static_folder="assets")
 @app.route("/")
 def index():
     file_names = get_current_image_names()
-    settings = {}
+
     try:
         with open("config/app.config") as json_file:
             settings = json.load(json_file)
+        with open("config/metabase_exports.json") as grouping:
+            image_sets = json.load(grouping)
     finally:
         pass
 
-    return render_template("index.html", image_list=file_names, config = settings)
+    return render_template("index.html", image_list=file_names, config=settings,
+                            screens=ast.literal_eval(json.dumps(image_sets)))
 
 
 # Configuration page for the dashboard
