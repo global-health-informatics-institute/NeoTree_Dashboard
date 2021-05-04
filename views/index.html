@@ -42,10 +42,15 @@
                         imageString = "<img style='height:100vh;width:100vw;' src="+ "/assets/images/screenshots/"+ screenSets[setName[currentIndex]][0] + ">"
                     }
                     else if (screenSets[setName[currentIndex]].length == 2){
-                        imageString = "<img style='height:100vh;width:48vw;' src="+ "/assets/images/screenshots/"+ screenSets[setName[currentIndex]][0] + ">"
-                        imageString += "<img style='height:100vh;width:48vw;' src="+ "/assets/images/screenshots/"+ screenSets[setName[currentIndex]][1] + ">"
+                        imageString = "<img style='height:59vh;width:99vw;' src="+ "/assets/images/screenshots/"+ screenSets[setName[currentIndex]][0] + ">"
+                        imageString += "<img style='height:39vh;width:99vw;' src="+ "/assets/images/screenshots/"+ screenSets[setName[currentIndex]][1] + ">"
                     }
-                    else if (screenSets[setName[currentIndex]].length <= 4){
+                    else if (screenSets[setName[currentIndex]].length == 3){
+                        imageString = "<img style='height:50vh;width:100vw;' src="+ "/assets/images/screenshots/"+ screenSets[setName[currentIndex]][0] + ">"
+                        imageString += "<img style='height:38vh;width:65vw;' src="+ "/assets/images/screenshots/"+ screenSets[setName[currentIndex]][1] + ">"
+                        imageString += "<img style='height:38vh;width:34vw;' src="+ "/assets/images/screenshots/"+ screenSets[setName[currentIndex]][2] + ">"
+                    }
+                    else if (screenSets[setName[currentIndex]].length == 4){
                        for (i=0 ; i < screenSets[setName[currentIndex]].length; i++)
                         {
                             imageString += "<img style='height:49vh;width:48vw;' src="+ "/assets/images/screenshots/"+ screenSets[setName[currentIndex]][i] + ">"
