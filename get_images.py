@@ -14,9 +14,8 @@ finally:
 
 url = settings["repository_url"]
 
-# url = 'http://www.rebekkagudleifs.com/photos/scenery/'
 
-
+# function to start process
 def initiate():
     extensions = ['jpg', 'jpeg', 'png']
     file_details = get_file_names(extensions)
@@ -32,7 +31,8 @@ def initiate():
                 print("File %s already exists" % file_name)
         else:
             print("Downloading file %s" % file_name)
-            download_file(file_url,file_name)
+            download_file(file_url, file_name)
+    get_display_configuration()
 
 
 # function to download a file
@@ -60,6 +60,16 @@ def get_file_names(ext=''):
     max_date = sorted(dates)[-1]
 
     return {"file_names": names, "max_date": max_date}
+
+
+def get_display_configuration():
+    file_url = '%smetabase_exports.json' % url
+    if settings["authentication_type"] == "Basic HTTP Authentication":
+        file_object = requests.get(file_url, auth=(settings['username'], settings['password']), allow_redirects=True)
+    else:
+        file_object = requests.get(file_url, allow_redirects=True)
+
+    open('config/metabase_exports.json', 'wb').write(file_object.content)
 
 
 if __name__ == "__main__":
