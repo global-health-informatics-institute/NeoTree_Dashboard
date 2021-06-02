@@ -38,9 +38,9 @@ def initiate():
 # function to download a file
 def download_file(file_url, file_name):
     if settings["authentication_type"] == "Basic HTTP Authentication":
-        file_object = requests.get(file_url, auth=(settings['username'], settings['password']), stream=False)
+        file_object = requests.get(file_url, auth=(settings['username'], settings['password']), stream=True)
     else:
-        file_object = requests.get(file_url, stream=False)
+        file_object = requests.get(file_url, stream=True)
 
     with open('assets/images/screenshots/%s' % file_name, 'wb') as local_file:
         for chunk in file_object.iter_content(chunk_size=1024):
