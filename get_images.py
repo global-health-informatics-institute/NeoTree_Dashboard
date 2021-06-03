@@ -1,9 +1,13 @@
+import os
+
 from bs4 import BeautifulSoup
 import re
 import json
 import requests
 from os import path
+from os import system
 from datetime import datetime
+from requests.auth import HTTPBasicAuth
 
 settings = {}
 try:
@@ -26,7 +30,7 @@ def initiate():
         if path.exists('assets/images/screenshots/%s' % file_name):
             if file_details["max_date"] > int(path.getmtime('assets/images/screenshots/%s' % file_name)):
                 print("File %s already exists but is old. Downloading" % file_name)
-                download_file(file_url,file_name)
+                download_file(file_url, file_name)
             else:
                 print("File %s already exists" % file_name)
         else:
@@ -38,13 +42,10 @@ def initiate():
 # function to download a file
 def download_file(file_url, file_name):
     if settings["authentication_type"] == "Basic HTTP Authentication":
-        file_object = requests.get(file_url, auth=(settings['username'], settings['password']), stream=True)
+        cmd = "wget -N --http-user='%s' --http-password='%s' --directory-prefix=assets/images/screenshots/ %s" % (settings['username'], settings['password'], file_url)
     else:
-        file_object = requests.get(file_url, stream=True)
-
-    with open('assets/images/screenshots/%s' % file_name, 'wb') as local_file:
-        for chunk in file_object.iter_content(chunk_size=1024):
-            local_file.write(chunk)
+        cmd = "wget -N --directory-prefix=assets/images/screenshots/ %s" % file_url
+    os.system(cmd)
 
 
 # function to retrieve file names
@@ -65,11 +66,11 @@ def get_file_names(ext=''):
 def get_display_configuration():
     file_url = '%smetabase_exports.json' % url
     if settings["authentication_type"] == "Basic HTTP Authentication":
-        file_object = requests.get(file_url, auth=(settings['username'], settings['password']), allow_redirects=True)
+        cmd = "wget -N --http-user='%s' --http-password='%s' --directory-prefix=config/ %s" % (settings['username'], settings['password'], file_url)
     else:
-        file_object = requests.get(file_url, allow_redirects=True)
+        cmd = "wget -N --directory-prefix=assets/images/screenshots/ %s" % file_url
 
-    open('config/metabase_exports.json', 'wb').write(file_object.content)
+    os.system(cmd)
 
 
 if __name__ == "__main__":
